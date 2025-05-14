@@ -102,4 +102,25 @@
             </div>
         </div>
     </div>
+
+    <script>
+        $('#transaksiForm').on('submit', function(e) {
+            let barangIds = [];
+            let duplicate = false;
+
+            $('.barang-select').each(function() {
+                let val = $(this).val();
+                if (val && barangIds.includes(val)) {
+                    duplicate = true;
+                    return false; // break loop
+                }
+                barangIds.push(val);
+            });
+
+            if (duplicate) {
+                alert('Tidak boleh ada barang yang sama dalam satu transaksi!');
+                e.preventDefault();
+            }
+        });
+    </script>
 @endsection

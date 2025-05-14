@@ -133,5 +133,17 @@ class TagihanController extends Controller
     public function destroy(string $id)
     {
         //
+        $tagihan = Tagihan::findOrFail($id);
+        $tagihan->delete();
+        return redirect()->route('tagihan.index')
+            ->with('success', 'Tagihan berhasil dihapus');
+    }
+
+    public function updateStatus(Request $request, string $id)
+    {
+        //
+        $tagihan = Tagihan::findOrFail($id);
+        $tagihan->update(['status_lunas' => $request->status_lunas]);
+        return redirect()->back()->with('success', 'Status tagihan berhasil diperbarui');
     }
 }

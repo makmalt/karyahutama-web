@@ -4,10 +4,19 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="{{ route('tagihan.index') }}">Daftar Tagihan</a></li>
+                    <li class="breadcrumb-item active">Tambah Tagihan</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="mb-0">Tambah Tagihan</h5>
+                <a href="{{ route('tagihan.index') }}" class="btn btn-secondary">
+                    <i class="bx bx-arrow-back"></i> Kembali
+                </a>
+            </div>
             <div class="card">
-                <div class="card-header">
-                    <h5 class="mb-0">Tambah Tagihan</h5>
-                </div>
                 <div class="card-body">
                     <form action="{{ route('tagihan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf

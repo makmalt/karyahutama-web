@@ -29,4 +29,9 @@ class Supplier extends Model
     {
         return $this->hasMany(Barang::class);
     }
+
+    public function kategori()
+    {
+        return $this->belongsTo(Kategori::class);
+    }
 }

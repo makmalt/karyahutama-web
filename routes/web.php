@@ -24,10 +24,12 @@ Route::middleware('auth')->group(function () {
 
     Route::resource('/barang', BarangController::class);
     Route::post('/barang/tambah-stok/{id}', [BarangController::class, 'tambahStok'])->name('barang.tambah-stok');
+    Route::post('/barang/kurang-stok/{id}', [BarangController::class, 'kurangStok'])->name('barang.kurang-stok');
     Route::resource('/supplier', SupplierController::class);
     Route::resource('/transaksi', TransaksiController::class);
     Route::get('/transaksi-export', [TransaksiController::class, 'export'])->name('transaksi.export');
     Route::resource('/tagihan', TagihanController::class);
+    Route::put('/tagihan/update-status/{id}', [TagihanController::class, 'updateStatus'])->name('tagihan.updateStatus');
     Route::resource('/kategori', KategoriController::class);
     Route::get('/struk/{transaksi}', [TransaksiController::class, 'struk'])->name('struk');
     Route::resource('/user', UserController::class);

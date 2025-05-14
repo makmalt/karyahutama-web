@@ -75,19 +75,19 @@
         </li>
         <li class="menu-item {{ request()->routeIs('supplier.*') ? 'active' : '' }}">
             <a href="{{ route('supplier.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bx-user-circle"></i>
                 <div data-i18n="Analytics">Supplier</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('transaksi.*') ? 'active' : '' }}">
             <a href="{{ route('transaksi.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bx-money"></i>
                 <div data-i18n="Analytics">Transaksi</div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('tagihan.*') ? 'active' : '' }}">
             <a href="{{ route('tagihan.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bx-file"></i>
                 <div data-i18n="Analytics">Tagihan</div>
             </a>
         </li>
@@ -96,7 +96,7 @@
 
         <li class="menu-item {{ request()->routeIs('kategori.*') ? 'active' : '' }}">
             <a href="{{ route('kategori.index') }}" class="menu-link">
-                <i class="menu-icon tf-icons bx bx-box"></i>
+                <i class="menu-icon tf-icons bx bx-category"></i>
                 <div data-i18n="Analytics">Kategori</div>
             </a>
         </li>

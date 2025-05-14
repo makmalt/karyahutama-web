@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('barangs', function (Blueprint $table) {
+        Schema::table('suppliers', function (Blueprint $table) {
             //
-            $table->string('sku_id')->unique()->nullable();
+            $table->string('kategori')->nullable();
         });
     }
 
@@ -22,9 +22,9 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('barangs', function (Blueprint $table) {
+        Schema::table('suppliers', function (Blueprint $table) {
             //
-            $table->dropColumn('sku_id');
+            $table->dropColumn('kategori');
         });
     }
 };

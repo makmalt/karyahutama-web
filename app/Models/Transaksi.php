@@ -20,4 +20,5 @@ class Transaksi extends Model
     protected $casts = [
         'tgl_transaksi' => 'datetime',
     ];
+    
 }

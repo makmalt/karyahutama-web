@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Supplier;
+use App\Models\Kategori;
 use Illuminate\Http\Request;
 
 class SupplierController extends Controller
@@ -10,14 +11,9 @@ class SupplierController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        $query = Supplier::query();
-        if ($request->q) {
-            $query->where('nama_supplier', 'like', '%' . $request->q . '%')
-                ->orWhere('kontak', 'like', '%' . $request->q . '%');
-        }
-        $suppliers = $query->paginate(10)->appends($request->all());
+        $suppliers = Supplier::all();
         return view('supplier.index', compact('suppliers'));
     }
 
@@ -26,7 +22,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        return view('supplier.create');
+        $kategori = Kategori::all();
+        return view('supplier.create', compact('kategori'));
     }
 
     /**

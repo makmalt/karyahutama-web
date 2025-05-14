@@ -19,7 +19,7 @@ class UserController extends Controller
     public function index()
     {
         $this->authorizeAdmin();
-        $users = User::paginate(10);
+        $users = User::all();
         return view('user.index', compact('users'));
     }
 

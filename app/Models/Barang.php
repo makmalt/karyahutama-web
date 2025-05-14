@@ -36,4 +36,18 @@ class Barang extends Model
     {
         return $this->hasMany(TambahStok::class);
     }
+
+    public function barangTransaksi()
+    {
+        return $this->hasMany(BarangTransaksi::class);
+    }
+
+    protected static function booted()
+    {
+        static::deleting(function ($barang) {
+            if ($barang->barangTransaksi()->exists()) {
+                throw new \Exception("Barang tidak bisa dihapus karena masih digunakan dalam transaksi.");
+            }
+        });
+    }
 }

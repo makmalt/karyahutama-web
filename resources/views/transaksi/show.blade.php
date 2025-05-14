@@ -12,8 +12,8 @@
             </nav>
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="mb-0">Detail Transaksi</h5>
-                <a href="{{ route('transaksi.index') }}" class="btn btn-secondary">
-                    <i class="bx bx-arrow-back"></i> Kembali
+                <a href="{{ route('transaksi.edit', $transaksi->id) }}" class="btn btn-warning">
+                    <i class="bx bx-pencil"></i> Edit
                 </a>
             </div>
             <div class="card">

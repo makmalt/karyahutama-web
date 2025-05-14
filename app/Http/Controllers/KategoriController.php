@@ -12,11 +12,7 @@ class KategoriController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Kategori::query();
-        if ($request->q) {
-            $query->where('nama_kategori', 'like', '%' . $request->q . '%');
-        }
-        $kategoris = $query->paginate(10)->appends($request->all());
+        $kategoris = Kategori::all();
         return view('kategori.index', compact('kategoris'));
     }
 

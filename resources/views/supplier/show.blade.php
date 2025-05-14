@@ -14,7 +14,7 @@
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="mb-0">Detail Supplier</h5>
                 <div class="d-flex justify-end gap-2"><a href="{{ route('supplier.edit', $supplier->id) }}"
-                        class="btn btn-primary">
+                        class="btn btn-warning">
                         <i class="bx bx-edit-alt me-1"></i> Edit
                     </a>
                 </div>

@@ -34,7 +34,7 @@
                                 <div class="mb-3">
                                     <label for="sku_id" class="form-label">SKU ID</label>
                                     <input type="text" class="form-control @error('sku_id') is-invalid @enderror"
-                                        id="sku_id" name="sku_id" value="{{ old('sku_id') }}" required>
+                                        id="sku_id" name="sku_id" value="{{ old('sku_id') }}">
                                     @error('sku_id')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

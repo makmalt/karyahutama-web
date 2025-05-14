@@ -27,6 +27,13 @@
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label for="kategori" class="form-label">Kategori</label>
+                            <select class="form-control @error('kategori') is-invalid @enderror" id="kategori"
+                                name="kategori" required>
+                                <option value="">Pilih Kategori</option>
+                            </select>
+                        </div>
 
                         <div class="mb-3">
                             <label for="alamat" class="form-label">Alamat</label>

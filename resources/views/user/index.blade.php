@@ -4,6 +4,12 @@
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-3">
+                    <li class="breadcrumb-item"><a href="#">User</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Daftar User</li>
+                </ol>
+            </nav>
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="mb-0">Daftar User</h5>
                 <a href="{{ route('user.create') }}" class="btn btn-primary">
@@ -63,7 +69,11 @@
 @push('scripts')
     <script>
         $(document).ready(function() {
-            $('#user-table').DataTable();
+            $('#user-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                }
+            });
         });
     </script>
 @endpush

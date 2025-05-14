@@ -25,7 +25,7 @@ return new class extends Migration
             $table->integer('kuantitas');
             $table->decimal('harga_satuan', 15, 2);
             $table->decimal('total_harga', 15, 2);
-            $table->string('keterangan');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
         });
     }

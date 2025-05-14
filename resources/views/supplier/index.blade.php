@@ -18,25 +18,17 @@
             </div>
 
             <div class="card">
-                <div class="card-header d-flex justify-content-end">
-                    <form action="{{ route('supplier.index') }}" method="GET" class="d-flex justify-content-end mb-3"
-                        style="max-width: 350px;">
-                        <input type="text" name="q" class="form-control form-control-sm me-2"
-                            placeholder="Cari supplier..." value="{{ request('q') }}">
-                        <button class="btn btn-outline-primary btn-sm" type="submit">
-                            <i class="bx bx-search"></i>
-                        </button>
-                    </form>
-                </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table">
+                        <table class="table" id="supplier-table">
                             <thead>
                                 <tr class="justify-content-between">
                                     <th class="px-4 py-3">No</th>
                                     <th class="px-4 py-3">Nama Supplier</th>
                                     <th class="px-4 py-3">Alamat</th>
                                     <th class="px-4 py-3">Kontak</th>
+                                    <th class="px-4 py-3">Kategori</th>
+                                    <th class="px-4 py-3">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
@@ -46,8 +38,13 @@
                                         <td>{{ $supplier->nama_supplier }}</td>
                                         <td>{{ $supplier->alamat }}</td>
                                         <td>{{ $supplier->kontak }}</td>
+                                        @if ($supplier->kategori)
+                                            <td>{{ $supplier->kategori->nama_kategori }}</td>
+                                        @else
+                                            <td></td>
+                                        @endif
                                         <td>
-                                            <div class="d-flex justify-content-end gap-2 text-start">
+                                            <div class="d-flex gap-2 text-start">
                                                 <a class="btn btn-info btn-sm"
                                                     href="{{ route('supplier.show', $supplier->id) }}">
                                                     <i class="bx bx-detail me-1"></i> Detail
@@ -69,9 +66,6 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="6" class="text-center">Tidak ada data supplier</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
@@ -80,4 +74,15 @@
             </div>
         </div>
     </div>
+    @push('scripts')
+        <script>
+            $(document).ready(function() {
+                $('#supplier-table').DataTable({
+                    language: {
+                        url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                    }
+                });
+            });
+        </script>
+    @endpush
 @endsection

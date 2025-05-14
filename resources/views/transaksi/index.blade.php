@@ -13,9 +13,6 @@
             <div class="d-flex justify-content-between mb-3">
                 <h5 class="mb-0">Daftar Transaksi</h5>
                 <div>
-                    <a href="{{ route('transaksi.export') }}" class="btn btn-success me-2" id="exportBtn">
-                        <i class="bx bx-file"></i> Export Excel
-                    </a>
                     <a href="{{ route('transaksi.create') }}" class="btn btn-primary">
                         <i class="bx bx-plus"></i> Tambah Transaksi
                     </a>
@@ -56,7 +53,10 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row mb-3 d-flex justify-content-end">
-                        <div class="col-md-4 d-flex align-items-center gap-2">
+                        <div class="col-md-3 d-flex align-items-center gap-2">
+                            <a href="{{ route('transaksi.export') }}" class="btn btn-success me-2" id="exportBtn">
+                                <i class="bx bx-file"></i> Export Excel
+                            </a>
                             @php
                                 $filterCount = 0;
                                 if (request('start_date')) {
@@ -66,13 +66,6 @@
                                     $filterCount++;
                                 }
                             @endphp
-                            <form action="{{ route('transaksi.index') }}" method="GET" class="flex-grow-1 d-flex">
-                                <input type="text" name="q" class="form-control form-control-sm me-2"
-                                    placeholder="Cari transaksi..." value="{{ request('q') }}">
-                                <button class="btn btn-outline-primary btn-sm" type="submit">
-                                    <i class="bx bx-search"></i>
-                                </button>
-                            </form>
                             <button type="button" class="btn btn-outline-secondary position-relative ms-2"
                                 data-bs-toggle="modal" data-bs-target="#filterModal">
                                 <i class="bx bx-filter"></i>
@@ -87,7 +80,7 @@
                 </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table">
+                        <table class="table" id="transaksi-table">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -129,18 +122,10 @@
                                         </td>
                                     </tr>
                                 @empty
-                                    <tr>
-                                        <td colspan="7" class="text-center">Tidak ada data transaksi</td>
-                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
-                    @if ($transaksis->hasPages())
-                        <div class="d-flex justify-content-center mt-4">
-                            {{ $transaksis->links() }}
-                        </div>
-                    @endif
                 </div>
             </div>
         </div>
@@ -169,6 +154,14 @@
                     document.getElementById('end_date').value = '';
                 });
             }
+        });
+
+        $(document).ready(function() {
+            $('#transaksi-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                }
+            });
         });
     </script>
 @endpush

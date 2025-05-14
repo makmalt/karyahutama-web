@@ -8,6 +8,8 @@ use App\Models\Barang;
 use App\Models\BarangTransaksi;
 use Spatie\SimpleExcel\SimpleExcelWriter;
 
+use function Pest\Laravel\get;
+
 class TransaksiController extends Controller
 {
     /**
@@ -17,10 +19,6 @@ class TransaksiController extends Controller
     {
         $query = Transaksi::query();
 
-        if ($request->q) {
-            $query->where('no_transaksi', 'like', '%' . $request->q . '%');
-        }
-
         if ($request->start_date) {
             $query->whereDate('tgl_transaksi', '>=', $request->start_date);
         }
@@ -29,7 +27,7 @@ class TransaksiController extends Controller
             $query->whereDate('tgl_transaksi', '<=', $request->end_date);
         }
 
-        $transaksis = $query->paginate(10)->appends($request->all());
+        $transaksis = $query->get();
         return view('transaksi.index', compact('transaksis'));
     }
 
@@ -63,7 +61,9 @@ class TransaksiController extends Controller
             ];
         }
 
-        BarangTransaksi::insert($barangTransaksi);
+        foreach ($barangTransaksi as $item) {
+            BarangTransaksi::create($item);
+        }
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil ditambahkan');
     }
 
@@ -85,7 +85,7 @@ class TransaksiController extends Controller
         //
         $transaksi = Transaksi::findOrFail($id);
         $barangs = Barang::all();
-        $barangTransaksi = BarangTransaksi::where('transaksi_id', $id)->get();
+        $barangTransaksi = BarangTransaksi::with('barang')->where('transaksi_id', $id)->get();
         return view('transaksi.edit', compact('transaksi', 'barangs', 'barangTransaksi'));
     }
 
@@ -94,19 +94,41 @@ class TransaksiController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $transaksi = Transaksi::findOrFail($id);
+
         $request->validate([
-            'no_transaksi' => 'required|unique:transaksi',
-            'tanggal' => 'required',
+            'no_transaksi' => 'required|unique:transaksi,no_transaksi,' . $id,
+            'tgl_transaksi' => 'required',
             'grand_total' => 'required',
             'uang_pembayaran' => 'nullable',
             'uang_kembalian' => 'nullable',
         ]);
 
-        $transaksi = Transaksi::findOrFail($id);
-        $transaksi->update($request->all());
+        // Update data utama transaksi
+        $transaksi->update([
+            'no_transaksi' => $request->no_transaksi,
+            'tgl_transaksi' => $request->tgl_transaksi,
+            'grand_total' => $request->grand_total,
+            'uang_pembayaran' => $request->uang_pembayaran,
+            'uang_kembalian' => $request->uang_kembalian,
+        ]);
+
+        // Hapus dan isi ulang barang_transaksi
+        BarangTransaksi::where('transaksi_id', $transaksi->id)->delete();
+
+        foreach ($request->barang_id as $index => $barangId) {
+            BarangTransaksi::create([
+                'barang_id' => $barangId,
+                'transaksi_id' => $transaksi->id,
+                'quantity' => $request->quantity[$index],
+                'harga_barang' => $request->harga_barang[$index],
+                'total_harga' => $request->total_harga[$index],
+            ]);
+        }
+
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil diubah');
     }
+
 
     /**
      * Remove the specified resource from storage.
@@ -115,6 +137,10 @@ class TransaksiController extends Controller
     {
         //
         $transaksi = Transaksi::findOrFail($id);
+        foreach ($transaksi->barangTransaksi as $item) {
+            $item->delete(); // Ini akan memicu event dan menjalankan addStock
+        }
+
         $transaksi->delete();
         return redirect()->route('transaksi.index')->with('success', 'Transaksi berhasil dihapus');
     }

@@ -7,6 +7,8 @@ use App\Models\Barang;
 use App\Models\Transaksi;
 use App\Models\BarangTransaksi;
 use Illuminate\Support\Facades\DB;
+use App\Models\Tagihan;
+use Carbon\Carbon;
 
 class DashboardController extends Controller
 {
@@ -25,15 +27,15 @@ class DashboardController extends Controller
             ->whereYear('tgl_transaksi', now()->year)
             ->sum('grand_total');
 
-        // Top items (bar chart) with month filter
+        // filter
         $topSelectedMonth = $request->input('top_month', now()->format('Y-m'));
         [$topYear, $topMonth] = explode('-', $topSelectedMonth);
 
-        // Sorting for topItems
+        // Sort topItems
         $sortField = $request->input('sort_field', 'sold');
         $sortDir = $request->input('sort_dir', 'desc');
 
-        // Top items (bar chart) with month filter, no manual sorting (handled by DataTables)
+        // chart barang pembelian
         $topItems = BarangTransaksi::select('barang_id', DB::raw('SUM(quantity) as sold'))
             ->whereHas('transaksi', function ($q) use ($topMonth, $topYear) {
                 $q->whereMonth('tgl_transaksi', $topMonth)
@@ -41,9 +43,10 @@ class DashboardController extends Controller
             })
             ->groupBy('barang_id')
             ->with('barang')
+            ->orderBy($sortField, $sortDir)
             ->get();
 
-        // Purchases per day (line chart) with month filter
+        // grafik pembelian per bulan
         $selectedMonth = $request->input('month', now()->format('Y-m'));
         [$year, $month] = explode('-', $selectedMonth);
         $purchases = Transaksi::select(
@@ -56,12 +59,24 @@ class DashboardController extends Controller
             ->orderBy('date')
             ->get();
 
+        // stok menipis
+        $lowStockItems = Barang::where('stok_tersedia', '<=', 5)->orderBy('stok_tersedia')->get();
+
+        $today = Carbon::today();
+        $nextWeek = Carbon::today()->addDays(7);
+
+        $tagihan = Tagihan::whereBetween('jatuhTempo_tagihan', [$today, $nextWeek])
+            ->where('status_lunas', 0)
+            ->get();
+
         return view('dashboard', compact(
             'totalItems',
             'transactionsThisMonth',
             'grandTotalThisMonth',
             'topItems',
-            'purchases'
+            'purchases',
+            'lowStockItems',
+            'tagihan'
         ));
     }
 }

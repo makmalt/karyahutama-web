@@ -10,6 +10,9 @@ class Tagihan extends Model
     //
     use HasFactory;
     protected $table = 'tagihans';
+    protected $casts = [
+        'jatuhTempo_tagihan' => 'datetime'
+    ];
     protected $fillable = [
         'tagihan',
         'nominal_tagihan',

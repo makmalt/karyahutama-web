@@ -18,24 +18,15 @@
             </div>
 
             <div class="card">
-                <div class="card-header d-flex justify-content-end">
-                    <form action="{{ route('kategori.index') }}" method="GET" class="d-flex justify-content-end mb-3"
-                        style="max-width: 350px;">
-                        <input type="text" name="q" class="form-control form-control-sm me-2"
-                            placeholder="Cari kategori..." value="{{ request('q') }}">
-                        <button class="btn btn-outline-primary btn-sm" type="submit">
-                            <i class="bx bx-search"></i>
-                        </button>
-                    </form>
-                </div>
                 <div class="card-body">
                     <div class="table-responsive text-nowrap">
-                        <table class="table">
+                        <table class="table" id="kategori-table">
                             <thead>
                                 <tr class="justify-content-between">
                                     <th class="px-4 py-3">No</th>
                                     <th class="px-4 py-3">Nama Kategori</th>
                                     <th class="px-4 py-3">Jumlah Barang</th>
+                                    <th class="px-4 py-3">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody class="table-border-bottom-0">
@@ -45,8 +36,8 @@
                                         <td>{{ $kategori->nama_kategori }}</td>
                                         <td>{{ $kategori->barang->count() }}</td>
                                         <td>
-                                            <div class="d-flex justify-content-end gap-2">
-                                                <a class="btn btn-primary btn-sm" href="#" data-bs-toggle="modal"
+                                            <div class="d-flex justify-content-start gap-2">
+                                                <a class="btn btn-warning btn-sm" href="#" data-bs-toggle="modal"
                                                     data-bs-target="#editKategoriModal{{ $kategori->id }}">
                                                     <i class="bx bx-edit-alt me-1"></i> Edit
                                                 </a>
@@ -62,7 +53,6 @@
                                             </div>
                                         </td>
                                     </tr>
-                                    <!-- Edit Modal -->
                                 @empty
                                     <tr>
                                         <td colspan="5" class="text-center">Tidak ada data kategori</td>
@@ -127,3 +117,15 @@
         </div>
     @endforeach
 @endsection
+
+@push('scripts')
+    <script>
+        $(document).ready(function() {
+            $('#kategori-table').DataTable({
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
+                }
+            });
+        });
+    </script>
+@endpush
