@@ -55,7 +55,7 @@ class ApiTransaksiController extends Controller
 
             // Kembalikan respons sukses
             return response()->json([
-                'success' => true,
+                'status' => 'success',
                 'message' => 'Transaksi berhasil ditambahkan!',
                 'data' => $transaksi,
             ], 201);
@@ -64,7 +64,7 @@ class ApiTransaksiController extends Controller
             DB::rollBack();
 
             return response()->json([
-                'success' => false,
+                'status' => 'error',
                 'message' => 'Terjadi kesalahan saat menambahkan transaksi.',
                 'error' => $e->getMessage(),
             ], 500);

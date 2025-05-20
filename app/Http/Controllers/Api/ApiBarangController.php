@@ -13,8 +13,7 @@ class ApiBarangController extends Controller
     //
     public function index()
     {
-        // $barang = Barang::all(); // Atau `all()` jika tanpa pagination
-        $barang = Barang::paginate(6); // Atau `all()` jika tanpa pagination
+        $barang = Barang::paginate(6);
         return new BarangCollection($barang);
     }
 
@@ -29,8 +28,8 @@ class ApiBarangController extends Controller
 
         return response()->json([
             'status' => 'success',
-            'data' => $barang->get()
-        ]);
+            'data' => $barang->get(),
+        ], 200);
     }
 
     public function show($id)
@@ -40,7 +39,10 @@ class ApiBarangController extends Controller
         // Mengganti kategori_id dengan nama kategori
         $barang->kategori_id = $barang->kategori->nama_kategori;
 
-        return response()->json($barang);
+        return response()->json([
+            'status' => 'success',
+            'data' => $barang,
+        ], 200);
     }
 
     public function findByBarcode($barcode)
@@ -54,6 +56,9 @@ class ApiBarangController extends Controller
         // Mengganti kategori_id dengan nama kategori
         $barang->kategori_id = $barang->kategori->nama_kategori;
 
-        return response()->json($barang);
+        return response()->json([
+            'status' => 'success',
+            'data' => $barang,
+        ], 200);
     }
 }
