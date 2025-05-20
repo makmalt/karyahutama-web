@@ -14,7 +14,7 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="name" class="form-label">Nama</label>
+                            <label for="name" class="form-label">Name <span style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('name') is-invalid @enderror" id="name"
                                 name="name" value="{{ old('name', $user->name) }}" required>
                             @error('name')
@@ -22,7 +22,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email</label>
+                            <label for="email" class="form-label">Email <span style="color: red;">*</span></label>
                             <input type="email" class="form-control @error('email') is-invalid @enderror" id="email"
                                 name="email" value="{{ old('email', $user->email) }}" required>
                             @error('email')

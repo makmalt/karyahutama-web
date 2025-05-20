@@ -20,7 +20,8 @@
                     <form action="{{ route('supplier.store') }}" method="POST">
                         @csrf
                         <div class="mb-3">
-                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                            <label for="nama_supplier" class="form-label">Nama Supplier <span
+                                    style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('nama_supplier') is-invalid @enderror"
                                 id="nama_supplier" name="nama_supplier" value="{{ old('nama_supplier') }}" required>
                             @error('nama_supplier')
@@ -28,15 +29,17 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="kategori" class="form-label">Kategori</label>
-                            <select class="form-control @error('kategori') is-invalid @enderror" id="kategori"
-                                name="kategori" required>
+                            <label for="kategori" class="form-label">Kategori <span style="color: red;">*</span></label>
+                            <select name="nama_kategori" id="nama_kategori" class="form-control">
                                 <option value="">Pilih Kategori</option>
+                                @foreach ($kategoris as $kategori)
+                                    <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                                @endforeach
                             </select>
                         </div>
 
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
+                            <label for="alamat" class="form-label">Alamat <span style="color: red;">*</span></label>
                             <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3"
                                 required>{{ old('alamat') }}</textarea>
                             @error('alamat')
@@ -45,7 +48,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="kontak" class="form-label">Kontak</label>
+                            <label for="kontak" class="form-label">Kontak <span style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak"
                                 name="kontak" value="{{ old('kontak') }}" required>
                             @error('kontak')

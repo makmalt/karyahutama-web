@@ -66,8 +66,8 @@ class ApiTransaksiController extends Controller
             return response()->json([
                 'status' => 'error',
                 'message' => 'Terjadi kesalahan saat menambahkan transaksi.',
-                'error' => $e->getMessage(),
-            ], 500);
+                'errors' => "Data barang tidak valid",
+            ], 422);
         }
     }
 

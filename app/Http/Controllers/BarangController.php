@@ -23,7 +23,8 @@ class BarangController extends Controller
                 ->orWhere('sku_id', 'like', '%' . $request->q . '%');
         }
         $barangs = $query->paginate(10)->appends($request->all());
-        return view('barang.index', compact('barangs'));
+        $suppliers = Supplier::all();
+        return view('barang.index', compact('barangs', 'suppliers'));
     }
 
     /**
@@ -42,7 +43,7 @@ class BarangController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_barang' => 'required|string|max:255',
+            'nama_barang' => 'required|string|max:255|unique:barangs,nama_barang',
             'deskripsi' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'barcode' => 'nullable|string|max:255',
@@ -76,7 +77,7 @@ class BarangController extends Controller
         ]);
 
         return redirect()->route('barang.index')
-            ->with('success', 'Barang berhasil ditambahkan');
+            ->with('success', 'Barang "' . $request->nama_barang . '" berhasil ditambahkan');
     }
 
     /**
@@ -86,8 +87,19 @@ class BarangController extends Controller
     {
         $barang = Barang::with('kategori')->findOrFail($id);
         $suppliers = Supplier::all();
-        return view('barang.show', compact('barang', 'suppliers'));
+        $tambahStok = TambahStok::with('supplier')
+            ->where('barang_id', $id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        // Tambahkan kondisi IF
+        if ($tambahStok->isEmpty()) {
+            session()->flash('warning', 'Barang ini belum pernah ditambah stok.');
+        }
+
+        return view('barang.show', compact('barang', 'suppliers', 'tambahStok'));
     }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -108,7 +120,7 @@ class BarangController extends Controller
         $barang = Barang::findOrFail($id);
 
         $request->validate([
-            'nama_barang' => 'required|string|max:255',
+            'nama_barang' => 'required|string|max:255|unique:barangs,nama_barang,' . $id,
             'deskripsi' => 'nullable|string',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'barcode' => 'nullable|string|max:255',
@@ -143,7 +155,7 @@ class BarangController extends Controller
         $barang->update($data);
 
         return redirect()->route('barang.index')
-            ->with('success', 'Barang berhasil diperbarui');
+            ->with('success', 'Data barang "' . $barang->nama_barang . '" berhasil diperbarui');
     }
 
     /**
@@ -164,7 +176,6 @@ class BarangController extends Controller
 
     public function tambahStok(Request $request, $id)
     {
-        //
         $barang = Barang::find($id);
         $barang->stok_tersedia += $request->kuantitas;
         $barang->save();

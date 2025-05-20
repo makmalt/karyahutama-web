@@ -18,7 +18,7 @@ Route::post('/logout', [AuthWebController::class, 'logoutWeb'])->name('logout');
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {
-        return view('dashboard');
+        return redirect()->route('dashboard');
     });
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 

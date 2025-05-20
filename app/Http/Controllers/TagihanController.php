@@ -70,7 +70,7 @@ class TagihanController extends Controller
 
         Tagihan::create($request->all());
         return redirect()->route('tagihan.index')
-            ->with('success', 'Tagihan berhasil ditambahkan');
+            ->with('success', 'Tagihan "' . $request->tagihan . '" berhasil ditambahkan');
     }
 
     /**
@@ -124,7 +124,7 @@ class TagihanController extends Controller
 
         $tagihan->update($data);
         return redirect()->route('tagihan.index')
-            ->with('success', 'Tagihan berhasil diubah');
+            ->with('success', 'Tagihan "' . $tagihan->tagihan . '" berhasil diubah');
     }
 
     /**
@@ -136,7 +136,7 @@ class TagihanController extends Controller
         $tagihan = Tagihan::findOrFail($id);
         $tagihan->delete();
         return redirect()->route('tagihan.index')
-            ->with('success', 'Tagihan berhasil dihapus');
+            ->with('success', 'Tagihan "' . $tagihan->tagihan . '" berhasil dihapus');
     }
 
     public function updateStatus(Request $request, string $id)
@@ -144,6 +144,6 @@ class TagihanController extends Controller
         //
         $tagihan = Tagihan::findOrFail($id);
         $tagihan->update(['status_lunas' => $request->status_lunas]);
-        return redirect()->back()->with('success', 'Status tagihan berhasil diperbarui');
+        return redirect()->back()->with('success', 'Status tagihan "' . $tagihan->tagihan . '" berhasil diperbarui');
     }
 }

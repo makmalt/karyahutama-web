@@ -19,21 +19,31 @@ class AuthController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Email dan Password Tidak Valid'], 401);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Email dan Password Tidak Valid Silakan Login Ulang',
+            ], 401);
         }
 
         $token = $user->createToken('auth_token')->plainTextToken;
 
         return response()->json([
-            'access_token' => $token,
-            'token_type' => 'Bearer',
-        ]);
+            'status' => 'success',
+            'message' => 'Login berhasil',
+            'data' => [
+                'access_token' => $token,
+                'token_type' => 'Bearer',
+            ],
+        ], 200);
     }
 
     public function logout(Request $request)
     {
         $request->user()->tokens()->delete();
 
-        return response()->json(['message' => 'Logout berhasil']);
+        return response()->json([
+            'status' => 'success',
+            'message' => 'Logout berhasil',
+        ], 200);
     }
 }

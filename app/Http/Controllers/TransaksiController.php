@@ -27,7 +27,10 @@ class TransaksiController extends Controller
             $query->whereDate('tgl_transaksi', '<=', $request->end_date);
         }
 
-        $transaksis = $query->get();
+        $transaksis = $query->orderBy('tgl_transaksi', 'desc')
+            ->orderBy('id', 'desc')
+            ->get();
+
         return view('transaksi.index', compact('transaksis'));
     }
 

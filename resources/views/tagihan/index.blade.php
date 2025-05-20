@@ -60,10 +60,6 @@
                                                 class="btn btn-info btn-sm">
                                                 <i class="bx bx-detail me-1"></i> Lihat
                                             </a>
-                                            <a href="{{ route('tagihan.edit', $tagihan->id) }}"
-                                                class="btn btn-warning btn-sm">
-                                                <i class="bx bx-edit-alt me-1"></i> Edit
-                                            </a>
                                             <form action="{{ route('tagihan.destroy', $tagihan->id) }}" method="POST"
                                                 class="d-inline">
                                                 @csrf
@@ -80,72 +76,84 @@
                                         </td>
                                     </tr>
                                 @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Tidak ada tagihan</td>
+                                    </tr>
                                 @endforelse
                             </tbody>
                         </table>
                     </div>
+
+                    {{-- Tempatkan seluruh modal di luar .table-responsive --}}
+                    @foreach ($tagihans as $tagihan)
+                        <!-- Modal Perbarui Status -->
+                        <div class="modal fade" id="perbaruiStatusModal{{ $tagihan->id }}" tabindex="-1"
+                            aria-labelledby="perbaruiStatusModalLabel{{ $tagihan->id }}" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="{{ route('tagihan.updateStatus', $tagihan->id) }}" method="POST"
+                                    class="modal-content" id="updateStatusForm{{ $tagihan->id }}">
+                                    @csrf
+                                    @method('PUT')
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="perbaruiStatusModalLabel{{ $tagihan->id }}">
+                                            Perbarui Status Tagihan
+                                        </h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                            aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="mb-3">
+                                            <label class="form-label">Detail Tagihan</label>
+                                            <div class="row">
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Nominal:</strong> Rp
+                                                        {{ number_format($tagihan->nominal_tagihan, 2, ',', '.') }}</p>
+                                                    <p class="mb-1"><strong>Jatuh Tempo:</strong>
+                                                        {{ $tagihan->jatuhTempo_tagihan->format('d-m-Y') }}</p>
+                                                </div>
+                                                <div class="col-6">
+                                                    <p class="mb-1"><strong>Supplier:</strong>
+                                                        {{ $tagihan->supplier->nama_supplier ?? '-' }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="alert alert-info" role="alert">
+                                            <i class="bx bx-info-circle me-2"></i>
+                                            Status saat ini:
+                                            @if ($tagihan->status_lunas)
+                                                <span class="badge bg-success">LUNAS</span>
+                                            @else
+                                                <span class="badge bg-warning text-dark">BELUM LUNAS</span>
+                                            @endif
+                                        </div>
+
+                                        <div class="form-check">
+                                            <input type="hidden" name="status_lunas" value="0">
+                                            <input class="form-check-input" type="checkbox" name="status_lunas"
+                                                value="1" {{ $tagihan->status_lunas ? 'checked' : '' }}
+                                                id="status_lunas{{ $tagihan->id }}">
+                                            <label class="form-check-label" for="status_lunas{{ $tagihan->id }}">
+                                                Tandai sebagai Lunas
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Batal</button>
+                                        <button type="submit" class="btn btn-primary"
+                                            id="simpanStatusBtn{{ $tagihan->id }}">
+                                            <i class="bx bx-save me-1"></i> Simpan Perubahan
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    @endforeach
+
                 </div>
             </div>
         </div>
-        <!-- Modal Perbarui Status -->
-        <div class="modal fade" id="perbaruiStatusModal{{ $tagihan->id }}" tabindex="-1"
-            aria-labelledby="perbaruiStatusModalLabel{{ $tagihan->id }}" aria-hidden="true">
-            <div class="modal-dialog">
-                <form action="{{ route('tagihan.updateStatus', $tagihan->id) }}" method="POST" class="modal-content"
-                    id="updateStatusForm{{ $tagihan->id }}">
-                    @csrf
-                    @method('PUT')
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="perbaruiStatusModalLabel{{ $tagihan->id }}">
-                            Perbarui Status Tagihan
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">Detail Tagihan</label>
-                            <div class="row">
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>Nominal:</strong> Rp
-                                        {{ number_format($tagihan->nominal_tagihan, 2, ',', '.') }}</p>
-                                    <p class="mb-1"><strong>Jatuh Tempo:</strong>
-                                        {{ $tagihan->jatuhTempo_tagihan->format('d-m-Y') }}</p>
-                                </div>
-                                <div class="col-6">
-                                    <p class="mb-1"><strong>Supplier:</strong>
-                                        {{ $tagihan->supplier->nama_supplier ?? '-' }}</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="alert alert-info" role="alert">
-                            <i class="bx bx-info-circle me-2"></i>
-                            Status saat ini:
-                            @if ($tagihan->status_lunas)
-                                <span class="badge bg-success">Lunas</span>
-                            @else
-                                <span class="badge bg-warning text-dark">Belum Lunas</span>
-                            @endif
-                        </div>
-
-                        <div class="form-check">
-                            <input type="hidden" name="status_lunas" value="0">
-                            <input class="form-check-input" type="checkbox" name="status_lunas" value="1"
-                                {{ $tagihan->status_lunas ? 'checked' : '' }}>
-                            <label class="form-check-label" for="status_lunas{{ $tagihan->id }}">
-                                Tandai sebagai Lunas
-                            </label>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
-                            <button type="submit" class="btn btn-primary" id="simpanStatusBtn{{ $tagihan->id }}">
-                                <i class="bx bx-save me-1"></i> Simpan Perubahan
-                            </button>
-                        </div>
-                </form>
-            </div>
-        </div>
-
     </div>
     @push('scripts')
         <script>

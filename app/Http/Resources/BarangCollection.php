@@ -28,9 +28,7 @@ class BarangCollection extends ResourceCollection
                     'kategori_id' => $barang->kategori_id
                 ];
             }),
-            'meta' => [
-                'api_version' => '1.0', // Contoh metadata tambahan
-            ],
+            'status' => 'success',
         ];
     }
 }

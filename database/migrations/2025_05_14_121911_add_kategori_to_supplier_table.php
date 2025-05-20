@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::table('suppliers', function (Blueprint $table) {
             //
-            $table->string('kategori')->nullable();
+            $table->string('kategori_id')->nullable();
         });
     }
 
@@ -24,7 +24,7 @@ return new class extends Migration
     {
         Schema::table('suppliers', function (Blueprint $table) {
             //
-            $table->dropColumn('kategori');
+            $table->dropColumn('kategori_id');
         });
     }
 };

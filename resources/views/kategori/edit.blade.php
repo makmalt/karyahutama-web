@@ -11,7 +11,7 @@
                     @csrf
                     @method('PUT')
                     <div class="mb-3">
-                        <label for="nama_kategori" class="form-label">Nama Kategori</label>
+                        <label for="nama_kategori" class="form-label">Nama Kategori <span style="color: red;">*</span></label>
                         <input type="text" class="form-control @error('nama_kategori') is-invalid @enderror"
                             id="nama_kategori" name="nama_kategori"
                             value="{{ old('nama_kategori', $kategori->nama_kategori) }}" required>

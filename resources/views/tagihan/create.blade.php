@@ -21,7 +21,7 @@
                     <form action="{{ route('tagihan.store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="mb-3">
-                            <label for="tagihan" class="form-label">Nama Tagihan</label>
+                            <label for="tagihan" class="form-label">Tagihan <span style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('tagihan') is-invalid @enderror" id="tagihan"
                                 name="tagihan" value="{{ old('tagihan') }}" required>
                             @error('tagihan')
@@ -29,7 +29,7 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="supplier_id" class="form-label">Supplier</label>
+                            <label for="supplier_id" class="form-label">Supplier <span style="color: red;">*</span></label>
                             <select class="form-select @error('supplier_id') is-invalid @enderror" id="supplier_id"
                                 name="supplier_id" required>
                                 <option value="">Pilih Supplier</option>
@@ -44,7 +44,8 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="nominal_tagihan" class="form-label">Nominal Tagihan</label>
+                            <label for="nominal_tagihan" class="form-label">Nominal Tagihan<span
+                                    style="color: red;">*</span></label>
                             <div class="input-group">
                                 <span class="input-group-text">Rp</span>
                                 <input type="number" class="form-control @error('nominal_tagihan') is-invalid @enderror"
@@ -56,7 +57,8 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="jatuhTempo_tagihan" class="form-label">Jatuh Tempo</label>
+                            <label for="jatuhTempo_tagihan" class="form-label">Jatuh Tempo<span
+                                    style="color: red;">*</span></label>
                             <input type="date" class="form-control @error('jatuhTempo_tagihan') is-invalid @enderror"
                                 id="jatuhTempo_tagihan" name="jatuhTempo_tagihan" value="{{ old('jatuhTempo_tagihan') }}"
                                 required>

@@ -36,6 +36,13 @@ class ApiBarangController extends Controller
     {
         $barang = Barang::find($id);
 
+        if (!$barang) {
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Barang tidak ditemukan',
+            ], 404);
+        }
+
         // Mengganti kategori_id dengan nama kategori
         $barang->kategori_id = $barang->kategori->nama_kategori;
 
@@ -50,7 +57,10 @@ class ApiBarangController extends Controller
         $barang = Barang::where('barcode', $barcode)->first();
 
         if (!$barang) {
-            return response()->json(['message' => 'Barang tidak ditemukan'], 404);
+            return response()->json([
+                'status' => 'error',
+                'message' => 'Barang tidak ditemukan',
+            ], 404);
         }
 
         // Mengganti kategori_id dengan nama kategori

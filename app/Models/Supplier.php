@@ -13,6 +13,7 @@ class Supplier extends Model
         'nama_supplier',
         'alamat',
         'kontak',
+        'kategori_id'
     ];
 
     public function tagihan()

@@ -246,7 +246,7 @@
                 }
 
                 if (pembayaran < total) {
-                    alert('Uang pembayaran kurang dari total transaksi!');
+                    alert('Uang pembayaran kurang dari grand total!');
                     e.preventDefault();
                     return;
                 }

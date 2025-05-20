@@ -22,8 +22,8 @@ class SupplierController extends Controller
      */
     public function create()
     {
-        $kategori = Kategori::all();
-        return view('supplier.create', compact('kategori'));
+        $kategoris = Kategori::all();
+        return view('supplier.create', compact('kategoris'));
     }
 
     /**
@@ -32,8 +32,9 @@ class SupplierController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nama_supplier' => 'required|string|max:255',
+            'nama_supplier' => 'required|string|max:255|unique:suppliers,nama_supplier',
             'alamat' => 'required|string',
+            'kategori' => 'string|max:255',
             'kontak' => 'required|string|max:255',
         ]);
 
@@ -56,7 +57,8 @@ class SupplierController extends Controller
      */
     public function edit(Supplier $supplier)
     {
-        return view('supplier.edit', compact('supplier'));
+        $kategoris = Kategori::all();
+        return view('supplier.edit', compact('supplier', 'kategoris'));
     }
 
     /**
@@ -64,17 +66,19 @@ class SupplierController extends Controller
      */
     public function update(Request $request, Supplier $supplier)
     {
-        $request->validate([
+        $validated = $request->validate([
             'nama_supplier' => 'required|string|max:255',
+            'kategori_id' => 'required|exists:kategori,id',
             'alamat' => 'required|string',
             'kontak' => 'required|string|max:20',
         ]);
 
-        $supplier->update($request->all());
+        $supplier->update($validated);
 
         return redirect()->route('supplier.index')
-            ->with('success', 'Data supplier "' . $request->nama_supplier . '" berhasil diperbarui');
+            ->with('success', 'Data supplier "' . $supplier->nama_supplier . '" berhasil diperbarui');
     }
+
 
     /**
      * Remove the specified resource from storage.

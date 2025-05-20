@@ -31,7 +31,8 @@
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="mb-3">
-                                    <label for="nama_barang" class="form-label">Nama Barang</label>
+                                    <label for="nama_barang" class="form-label">Nama Barang <span
+                                            style="color: red;">*</span></label>
                                     <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"
                                         id="nama_barang" name="nama_barang"
                                         value="{{ old('nama_barang', $barang->nama_barang) }}" required>
@@ -41,7 +42,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="kategori_id" class="form-label">Kategori</label>
+                                    <label for="kategori_id" class="form-label">Kategori <span
+                                            style="color: red;">*</span></label>
                                     <select class="form-select @error('kategori_id') is-invalid @enderror" id="kategori_id"
                                         name="kategori_id" required>
                                         <option value="">Pilih Kategori</option>
@@ -60,7 +62,7 @@
                                 <div class="mb-3">
                                     <label for="supplier_id" class="form-label">Supplier</label>
                                     <select class="form-select @error('supplier_id') is-invalid @enderror" id="supplier_id"
-                                        name="supplier_id" required>
+                                        name="supplier_id">
                                         <option value="">Pilih Supplier</option>
                                         @foreach ($suppliers as $supplier)
                                             <option value="{{ $supplier->id }}"
@@ -75,7 +77,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="hargaBeli" class="form-label">Harga Beli</label>
+                                    <label for="hargaBeli" class="form-label">Harga Beli <span
+                                            style="color: red;">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">Rp</span>
                                         <input type="number" class="form-control @error('hargaBeli') is-invalid @enderror"
@@ -88,7 +91,8 @@
                                 </div>
 
                                 <div class="mb-3">
-                                    <label for="stok_tersedia" class="form-label">Stok</label>
+                                    <label for="stok_tersedia" class="form-label">Stok <span
+                                            style="color: red;">*</span></label>
                                     <input type="number" class="form-control @error('stok_tersedia') is-invalid @enderror"
                                         id="stok_tersedia" name="stok_tersedia"
                                         value="{{ old('stok_tersedia', $barang->stok_tersedia) }}" required min="0">

@@ -41,14 +41,17 @@
                                                         alt="{{ $barang->nama_barang }}" class="img-fluid rounded"
                                                         style="width: 100%; aspect-ratio: 1/1; object-fit: cover;">
                                                 @else
-                                                    <img src="{{ asset('assets/img/no-image.png') }}" alt="No Image"
-                                                        class="img-fluid rounded"
-                                                        style="width: 100%; aspect-ratio: 1/1; object-fit: cover;">
+                                                    <div style="width: 100%; aspect-ratio: 1/1; overflow: hidden;">
+                                                        <img src="{{ asset('assets/img/no-image.png') }}" alt="No Image"
+                                                            style="width: 100%; height: 100%; object-fit: cover; border-radius: .25rem;">
+                                                    </div>
                                                 @endif
                                             </div>
-                                            <div class="text-center small text-muted mb-1">{{ $barang->sku_id }}</div>
-                                            <div class="text-center fw-bold mb-1">{{ $barang->nama_barang }}</div>
-                                            <div class="text-center text-secondary mb-2">
+                                            <div class="text-center small text-muted mb-1">
+                                                {!! $barang->sku_id ? e($barang->sku_id) : '<em>no sku_id</em>' !!}
+                                            </div>
+                                            <div class="text-center text-dark fw-bold mb-1">{{ $barang->nama_barang }}</div>
+                                            <div class="text-center text-dark mb-2">
                                                 Rp. {{ number_format($barang->harga, 2, ',', '.') }}
                                             </div>
                                             <div class="d-flex justify-content-center gap-2 mb-2">
@@ -100,15 +103,17 @@
                                                         class="form-label">Supplier</label>
                                                     <select class="form-select" id="supplier_id{{ $barang->id }}"
                                                         name="supplier_id">
+                                                        <option value="">Pilih Supplier</option>
                                                         @foreach ($suppliers as $supplier)
-                                                            <option value="{{ $supplier->id }}">
+                                                            <option value="{{ $supplier->id }}"
+                                                                {{ old('supplier_id') == $supplier->id ? 'selected' : '' }}>
                                                                 {{ $supplier->nama_supplier }}</option>
                                                         @endforeach
                                                     </select>
                                                 </div>
                                                 <div class="mb-3">
                                                     <label for="tgl_masuk{{ $barang->id }}" class="form-label">Tanggal
-                                                        Masuk</label>
+                                                        Masuk <span style="color: red;">*</span></label>
                                                     <input type="date" class="form-control"
                                                         id="tgl_masuk{{ $barang->id }}" name="tgl_masuk" required>
                                                 </div>

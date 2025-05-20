@@ -23,7 +23,8 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="no_transaksi" class="form-label">No Transaksi</label>
+                            <label for="no_transaksi" class="form-label">No Transaksi <span
+                                    style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('no_transaksi') is-invalid @enderror"
                                 id="no_transaksi" name="no_transaksi"
                                 value="{{ old('no_transaksi', $transaksi->no_transaksi) }}" required>

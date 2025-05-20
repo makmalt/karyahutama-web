@@ -30,7 +30,8 @@
                         @csrf
                         @method('PUT')
                         <div class="mb-3">
-                            <label for="nama_supplier" class="form-label">Nama Supplier</label>
+                            <label for="nama_supplier" class="form-label">Nama Supplier <span
+                                    style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('nama_supplier') is-invalid @enderror"
                                 id="nama_supplier" name="nama_supplier"
                                 value="{{ old('nama_supplier', $supplier->nama_supplier) }}" required>
@@ -39,14 +40,24 @@
                             @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="kategori" class="form-label">Kategori</label>
-                            <select class="form-control @error('kategori') is-invalid @enderror" id="kategori"
-                                name="kategori" required>
-                                <option value="">Pilih Kategori</option>
+                            <label for="kategori" class="form-label">Kategori <span style="color: red;">*</span></label>
+                            <select name="kategori_id" id="kategori_id" class="form-control">
+                                <option value="">
+                                    {{ old('kategori_id', optional($supplier->kategori)->nama_kategori ?? 'Pilih Kategori') }}
+                                </option>
+                                @foreach ($kategoris as $kategori)
+                                    <option value="{{ $kategori->id }}"
+                                        {{ old('kategori_id', $supplier->kategori_id) == $kategori->id ? 'selected' : '' }}>
+                                        {{ $kategori->nama_kategori }}
+                                    </option>
+                                @endforeach
                             </select>
+                            @error('kategori_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                         <div class="mb-3">
-                            <label for="alamat" class="form-label">Alamat</label>
+                            <label for="alamat" class="form-label">Alamat <span style="color: red;">*</span></label>
                             <textarea class="form-control @error('alamat') is-invalid @enderror" id="alamat" name="alamat" rows="3"
                                 required>{{ old('alamat', $supplier->alamat) }}</textarea>
                             @error('alamat')
@@ -55,7 +66,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label for="kontak" class="form-label">Kontak</label>
+                            <label for="kontak" class="form-label">Kontak <span style="color: red;">*</span></label>
                             <input type="text" class="form-control @error('kontak') is-invalid @enderror" id="kontak"
                                 name="kontak" value="{{ old('kontak', $supplier->kontak) }}" required>
                             @error('kontak')

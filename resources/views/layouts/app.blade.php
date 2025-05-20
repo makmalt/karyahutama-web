@@ -96,6 +96,21 @@
         </div>
     </div>
 
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const textInputs = document.querySelectorAll('input[type="text"]');
+            textInputs.forEach(function(input) {
+                input.addEventListener('drop', function(e) {
+                    e.preventDefault();
+                });
+                input.addEventListener('dragover', function(e) {
+                    e.preventDefault();
+                });
+            });
+        });
+    </script>
+
+
     <!-- Core JS -->
     <script src="{{ asset('assets/vendor/libs/jquery/jquery.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/popper/popper.js') }}"></script>

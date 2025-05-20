@@ -20,11 +20,13 @@ class AuthWebController extends Controller
             'password' => 'required',
         ]);
 
-        if ($credentials['email'] !== 'admin@karyahutamaoxygen.com') {
-            return back()->with('error', 'Hanya admin yang bisa login.');
-        }
-
         if (Auth::attempt($credentials, $request->remember)) {
+            // Cek apakah yang login adalah admin
+            if (Auth::user()->email !== 'admin@karyahutamaoxygen.com') {
+                Auth::logout();
+                return back()->with('error', 'Hanya admin yang bisa login.');
+            }
+
             $request->session()->regenerate();
             return redirect()->intended('/dashboard');
         }

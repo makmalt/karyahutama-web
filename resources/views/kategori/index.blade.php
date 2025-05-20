@@ -77,10 +77,25 @@
                 </div>
                 <div class="modal-body">
                     <div class="mb-3">
-                        <label for="nama_kategori" class="form-label">Nama Kategori</label>
-                        <input type="text" class="form-control" id="nama_kategori" name="nama_kategori" required>
+                        <label for="nama_kategori" class="form-label">Nama Kategori <span
+                                style="color: red;">*</span></label>
+                        <input type="text" class="form-control @error('nama_kategori') is-invalid @enderror"
+                            id="nama_kategori" name="nama_kategori" value="{{ old('nama_kategori') }}" required>
+                        @error('nama_kategori')
+                            <div class="invalid-feedback">
+                                {{-- Ganti pesan default dengan pesan Indonesia --}}
+                                @if (str_contains($message, 'required'))
+                                    Nama kategori wajib diisi.
+                                @elseif (str_contains($message, 'unique'))
+                                    Nama kategori sudah digunakan, silakan masukkan nama lain.
+                                @else
+                                    {{ $message }}
+                                @endif
+                            </div>
+                        @enderror
                     </div>
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
                     <button type="submit" class="btn btn-primary">Simpan</button>
@@ -88,6 +103,7 @@
             </form>
         </div>
     </div>
+
     <!-- edit modal -->
     @foreach ($kategoris as $kategori)
         <div class="modal fade" id="editKategoriModal{{ $kategori->id }}" tabindex="-1"
@@ -128,4 +144,11 @@
             });
         });
     </script>
+    @if ($errors->has('nama_kategori'))
+        <script>
+            const createModal = new bootstrap.Modal(document.getElementById('createKategoriModal'));
+            createModal.show();
+        </script>
+    @endif
+
 @endpush

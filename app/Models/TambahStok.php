@@ -28,4 +28,9 @@ class TambahStok extends Model
     {
         return $this->belongsTo(Barang::class);
     }
+
+    public function supplier()
+    {
+        return $this->belongsTo(Supplier::class);
+    }
 }

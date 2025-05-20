@@ -122,9 +122,6 @@
                                     <td>{{ $item->stok_tersedia }}</td>
                                 </tr>
                             @empty
-                                <tr>
-                                    <td colspan="3" class="text-center">Tidak ada barang dengan stok menipis</td>
-                                </tr>
                             @endforelse
                         </tbody>
                     </table>
@@ -223,12 +220,12 @@
             // DataTables for all tables
             $(document).ready(function() {
                 $('#barang-keluar').DataTable();
+                $('#tagihan-table').DataTable();
                 $('#stok-menipis-table').DataTable({
                     language: {
                         url: '//cdn.datatables.net/plug-ins/1.13.6/i18n/id.json'
                     }
                 });
-                $('#tagihan-table').DataTable();
             });
         </script>
     @endpush

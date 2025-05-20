@@ -47,13 +47,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="tgl_masuk{{ $barang->id }}" class="form-label">Tanggal
-                                        Masuk</label>
+                                        Masuk <span style="color: red;">*</span></label>
                                     <input type="date" class="form-control" id="tgl_masuk{{ $barang->id }}"
                                         name="tgl_masuk" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="harga_satuan{{ $barang->id }}" class="form-label">Harga
-                                        Satuan</label>
+                                        Satuan <span style="color: red;">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">Rp</span>
                                         <input type="number" class="form-control" id="harga_satuan{{ $barang->id }}"
@@ -62,13 +62,13 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="kuantitas{{ $barang->id }}" class="form-label">Jumlah
-                                        Stok</label>
+                                        Stok <span style="color: red;">*</span></label>
                                     <input type="number" class="form-control" id="kuantitas{{ $barang->id }}"
                                         name="kuantitas" min="1" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="total_harga{{ $barang->id }}" class="form-label">Total
-                                        Harga</label>
+                                        Harga <span style="color: red;">*</span></label>
                                     <div class="input-group">
                                         <span class="input-group-text">Rp</span>
                                         <input type="number" class="form-control" id="total_harga{{ $barang->id }}"
@@ -97,6 +97,10 @@
                             <div class="mb-4">
                                 <h6 class="fw-semibold">Kategori</h6>
                                 <p class="mb-0">{{ $barang->kategori->nama_kategori }}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="fw-semibold">SKU ID</h6>
+                                <p class="mb-0">{{ $barang->sku_id }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -135,16 +139,18 @@
                                         <th class="px-4 py-3">Kuantitas</th>
                                         <th class="px-4 py-3">Harga Satuan</th>
                                         <th class="px-4 py-3">Total Harga</th>
+                                        <th class="px-4 py-3">Supplier</th>
                                         <th class="px-4 py-3">Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @forelse($barang->tambahStok as $tambahStok)
+                                    @forelse($tambahStok as $tambahStok)
                                         <tr>
                                             <td>{{ $tambahStok->tgl_masuk->format('d F Y') }}</td>
                                             <td>{{ $tambahStok->kuantitas }}</td>
-                                            <td>{{ $tambahStok->harga_satuan }}</td>
-                                            <td>{{ $tambahStok->total_harga }}</td>
+                                            <td>Rp {{ number_format($tambahStok->harga_satuan, 0, ',', '.') }}</td>
+                                            <td>Rp {{ number_format($tambahStok->total_harga, 0, ',', '.') }}</td>
+                                            <td>{{ $tambahStok->supplier->nama_supplier ?? '-' }}</td>
                                             <td>
                                                 <form action="{{ route('barang.kurang-stok', $tambahStok->id) }}"
                                                     method="POST"
@@ -157,9 +163,6 @@
                                             </td>
                                         </tr>
                                     @empty
-                                        <tr>
-                                            <td colspan="4" class="text-center">Tidak ada riwayat stok</td>
-                                        </tr>
                                     @endforelse
                                 </tbody>
                             </table>
