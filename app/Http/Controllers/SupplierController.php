@@ -34,11 +34,12 @@ class SupplierController extends Controller
         $request->validate([
             'nama_supplier' => 'required|string|max:255|unique:suppliers,nama_supplier',
             'alamat' => 'required|string',
-            'kategori' => 'string|max:255',
+            'kategori_id' => 'exists:kategoris,id',
             'kontak' => 'required|string|max:255',
         ]);
 
-        Supplier::create($request->all());
+        $data = $request->all();
+        Supplier::create($data);
 
         return redirect()->route('supplier.index')
             ->with('success', 'Supplier "' . $request->nama_supplier . '" berhasil ditambahkan');
@@ -67,8 +68,8 @@ class SupplierController extends Controller
     public function update(Request $request, Supplier $supplier)
     {
         $validated = $request->validate([
-            'nama_supplier' => 'required|string|max:255',
-            'kategori_id' => 'required|exists:kategori,id',
+            'nama_supplier' => 'required|string|max:255|unique:suppliers,nama_supplier,' . $supplier->id,
+            'kategori_id' => 'exists:kategoris,id',
             'alamat' => 'required|string',
             'kontak' => 'required|string|max:20',
         ]);

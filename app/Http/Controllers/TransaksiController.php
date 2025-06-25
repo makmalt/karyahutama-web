@@ -50,8 +50,15 @@ class TransaksiController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'no_transaksi' => 'required|unique:transaksi,no_transaksi',
+            'tgl_transaksi' => 'required|date',
+            'grand_total' => 'required|numeric|min:0',
+            'uang_pembayaran' => 'nullable|numeric|min:0',
+            'uang_kembalian' => 'nullable|numeric|min:0',
+        ]);
         $transaksi = Transaksi::create($request->all());
-
+        
         $barangTransaksi = [];
 
         foreach ($request->barang_id as $index => $barangId) {

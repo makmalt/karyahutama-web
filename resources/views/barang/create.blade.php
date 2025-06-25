@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Barang')
+@section('title', 'POS Karya Hutama Oxygen - Tambah Barang')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -28,6 +28,15 @@
                                     <input type="text" class="form-control @error('nama_barang') is-invalid @enderror"
                                         id="nama_barang" name="nama_barang" value="{{ old('nama_barang') }}" required>
                                     @error('nama_barang')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="mb-3">
+                                    <label for="barcode" class="form-label">Barcode</label>
+                                    <input type="text" class="form-control @error('barcode') is-invalid @enderror"
+                                        id="barcode" name="barcode" value="{{ old('barcode') }}">
+                                    @error('barcode')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -62,7 +71,7 @@
                                 <div class="mb-3">
                                     <label for="supplier_id" class="form-label">Supplier</label>
                                     <select class="form-select @error('supplier_id') is-invalid @enderror" id="supplier_id"
-                                        name="supplier_id">
+                                        name="supplier_id" required>
                                         <option value="">Pilih Supplier</option>
                                         @foreach ($suppliers as $supplier)
                                             <option value="{{ $supplier->id }}"

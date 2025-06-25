@@ -27,12 +27,22 @@ class ApiTransaksiController extends Controller
         DB::beginTransaction();
 
         try {
-            // Generate nomor transaksi
-            $no_transaksi = 'TRX-' . now()->format('dmY') . '-' . strtoupper(uniqid());
+            // Check stock availability for each item
+            foreach ($request->input('barang_transaksis') as $barangTransaksiData) {
+                $barang = \App\Models\Barang::findOrFail($barangTransaksiData['barang_id']);
+                if ($barang->stok_tersedia < $barangTransaksiData['quantity']) {
+                    return response()->json([
+                        'status' => 'error',
+                        'message' => 'Stok barang tidak mencukupi',
+                        'barang' => $barang->nama_barang,
+                        'stok_tersedia' => $barang->stok_tersedia,
+                        'quantity_dibutuhkan' => $barangTransaksiData['quantity']
+                    ], 422);
+                }
+            }
 
             $transaksi = Transaksi::create([
-                'no_transaksi' => $no_transaksi,
-                // 'no_transaksi' => $request->input('no_transaksi'),
+                'no_transaksi' => $request->input('no_transaksi'),
                 'tgl_transaksi' => now(),
                 'uang_pembayaran' => $request->input('uang_pembayaran'),
                 'uang_kembalian' => $request->input('uang_kembalian'),
@@ -74,30 +84,5 @@ class ApiTransaksiController extends Controller
     public function struk(Transaksi $transaksi)
     {
         return view('struk', compact('transaksi'));
-    }
-
-    public function strukPlain($id)
-    {
-        $transaksi = Transaksi::with('barangTransaksi.barang')->findOrFail($id);
-
-        $struk = "=== Karya Hutama Oxygen ===\n";
-        $struk .= "No: {$transaksi->no_transaksi}\n";
-        $struk .= "Tgl: " . $transaksi->tgl_transaksi->format('d/m/Y H:i') . "\n";
-        $struk .= "-----------------------------\n";
-
-        foreach ($transaksi->barangTransaksi as $item) {
-            $struk .= substr($item->barang->nama_barang, 0, 15) . " ";
-            $struk .= number_format($item->total_harga, 0, ',', '.') . "\n";
-            $struk .= "{$item->quantity}x" . number_format($item->harga_barang, 0, ',', '.') . "\n";
-        }
-
-        $struk .= "-----------------------------\n";
-        $struk .= "TOTAL     : Rp" . number_format($transaksi->grand_total, 0, ',', '.') . "\n";
-        $struk .= "BAYAR     : Rp" . number_format($transaksi->uang_pembayaran, 0, ',', '.') . "\n";
-        $struk .= "KEMBALIAN : Rp" . number_format($transaksi->uang_kembalian, 0, ',', '.') . "\n";
-        $struk .= "-----------------------------\n";
-        $struk .= "Terima kasih!\n";
-
-        return response($struk)->header('Content-Type', 'text/plain');
     }
 }

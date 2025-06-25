@@ -11,11 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('barangs', function (Blueprint $table) {
-            //
-            $table->unsignedBigInteger('kategori_id');
-            // Menambahkan kembali foreign key constraint
-            $table->foreign('kategori_id')->references('id')->on('kategoris')->onDelete('cascade');
+        Schema::table('kategoris', function (Blueprint $table) {
+            $table->text('deskripsi')->nullable()->after('nama_kategori');
         });
     }
 
@@ -24,8 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('barangs', function (Blueprint $table) {
-            //
+        Schema::table('kategoris', function (Blueprint $table) {
+            $table->dropColumn('deskripsi');
         });
     }
 };

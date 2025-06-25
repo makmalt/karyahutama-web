@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use App\Models\TambahStok;
 use Illuminate\Validation\Rule;
+use App\Services\StokServices;
 
 class BarangController extends Controller
 {
@@ -51,7 +52,7 @@ class BarangController extends Controller
             'stok_tersedia' => 'required|integer|min:0',
             'sku_id' => 'nullable|string|max:255|unique:barangs,sku_id',
             'hargaBeli' => 'required|numeric|min:0',
-            'kategori_id' => 'required|exists:kategori,id'
+            'kategori_id' => 'required|exists:kategoris,id'
         ]);
 
         $data = $request->all();
@@ -66,15 +67,11 @@ class BarangController extends Controller
         }
 
         $barang = Barang::create($data);
-        TambahStok::create([
-            'barang_id' => $barang->id,
-            'supplier_id' => $request->supplier_id,
-            'tgl_masuk' => now(),
-            'kuantitas' => $request->stok_tersedia,
-            'harga_satuan' => $request->hargaBeli,
-            'total_harga' => $request->hargaBeli * $request->stok_tersedia,
-            'keterangan' => "Awal Stok"
-        ]);
+
+        $stokServices = new StokServices();
+        $tambahStok = $stokServices->awalStok($barang->id, $request->supplier_id, $request->stok_tersedia, $request->hargaBeli);
+
+        TambahStok::create($tambahStok);
 
         return redirect()->route('barang.index')
             ->with('success', 'Barang "' . $request->nama_barang . '" berhasil ditambahkan');
@@ -87,15 +84,8 @@ class BarangController extends Controller
     {
         $barang = Barang::with('kategori')->findOrFail($id);
         $suppliers = Supplier::all();
-        $tambahStok = TambahStok::with('supplier')
-            ->where('barang_id', $id)
-            ->orderBy('id', 'desc')
-            ->get();
-
-        // Tambahkan kondisi IF
-        if ($tambahStok->isEmpty()) {
-            session()->flash('warning', 'Barang ini belum pernah ditambah stok.');
-        }
+        $stokServices = new StokServices();
+        $tambahStok = $stokServices->getTambahStok($id);
 
         return view('barang.show', compact('barang', 'suppliers', 'tambahStok'));
     }
@@ -133,7 +123,7 @@ class BarangController extends Controller
                 Rule::unique('barangs', 'sku_id')->ignore($barang->id),
             ],
             'hargaBeli' => 'required|numeric|min:0',
-            'kategori_id' => 'required|exists:kategori,id'
+            'kategori_id' => 'required|exists:kategoris,id'
         ]);
 
         $data = $request->all();
@@ -176,30 +166,26 @@ class BarangController extends Controller
 
     public function tambahStok(Request $request, $id)
     {
-        $barang = Barang::find($id);
-        $barang->stok_tersedia += $request->kuantitas;
-        $barang->save();
-        TambahStok::create([
-            'barang_id' => $barang->id,
-            'supplier_id' => $request->supplier_id,
-            'tgl_masuk' => $request->tgl_masuk,
-            'kuantitas' => $request->kuantitas,
-            'harga_satuan' => $request->harga_satuan,
-            'total_harga' => $request->total_harga
-        ]);
+        $stokServices = new StokServices();
+        $tambahStok = $stokServices->tambahStokBarang(
+            $id,
+            $request->supplier_id,
+            $request->tgl_masuk,
+            $request->kuantitas,
+            $request->harga_satuan
+        );
+
+
         return redirect()->route('barang.index')
-            ->with('success', 'Stok ' . $request->kuantitas . ' ' . $barang->nama_barang . ' berhasil ditambahkan');
+            ->with('success', 'Stok ' . $request->kuantitas . ' ' . $tambahStok->barang->nama_barang . ' berhasil ditambahkan');
     }
 
     public function kurangStok($id)
     {
-        $tambahStok = TambahStok::find($id);
-        $barang = Barang::find($tambahStok->barang_id);
+        $stokServices = new StokServices();
+        $stokServices->kurangStokBarang($id);
 
-        $barang->stok_tersedia = max(0, $barang->stok_tersedia - $tambahStok->kuantitas);
-        $barang->save();
-        $tambahStok->delete();
-        return redirect()->route('barang.show', $barang->id)
-            ->with('success', 'Stok ' . $tambahStok->kuantitas . ' ' . $barang->nama_barang . ' berhasil dikurangi');
+        return redirect()->route('barang.show', $id)
+            ->with('success', 'Stok berhasil dikurangi');
     }
 }

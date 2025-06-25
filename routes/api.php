@@ -4,7 +4,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\ApiBarangController;   
 use App\Http\Controllers\Api\ApiTransaksiController;
-use function Laravel\Prompts\search;
+
+Route::get('/', function () {
+    return response()->json([
+        'message' => 'API is running'
+    ]);
+});
 
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');

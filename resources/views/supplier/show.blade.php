@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Supplier')
+@section('title', 'POS Karya Hutama Oxygen - Detail Supplier')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">

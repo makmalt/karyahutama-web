@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Detail Barang')
+@section('title', 'POS Karya Hutama Oxygen - Detail Barang')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -101,6 +101,10 @@
                             <div class="mb-4">
                                 <h6 class="fw-semibold">SKU ID</h6>
                                 <p class="mb-0">{{ $barang->sku_id }}</p>
+                            </div>
+                            <div class="mb-4">
+                                <h6 class="fw-semibold">Barcode</h6>
+                                <p class="mb-0">{{ $barang->barcode ?? '-' }}</p>
                             </div>
                         </div>
                         <div class="col-md-6">

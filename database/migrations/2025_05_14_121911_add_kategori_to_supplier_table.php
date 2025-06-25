@@ -13,7 +13,8 @@ return new class extends Migration
     {
         Schema::table('suppliers', function (Blueprint $table) {
             //
-            $table->string('kategori_id')->nullable();
+            $table->unsignedBigInteger('kategori_id')->nullable();
+            $table->foreign('kategori_id')->references('id')->on('kategoris')->onDelete('cascade');
         });
     }
 

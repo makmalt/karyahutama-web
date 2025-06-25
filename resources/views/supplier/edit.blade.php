@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Supplier')
+@section('title', 'POS Karya Hutama Oxygen - Edit Supplier')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -17,9 +17,13 @@
                         class="btn btn-primary">
                         <i class="bx bx-detail me-1"></i> Detail
                     </a>
-                    <a href="{{ route('supplier.destroy', $supplier->id) }}" class="btn btn-danger">
-                        <i class="bx bx-trash me-1"></i> Hapus
-                    </a>
+                    <form action="{{ route('supplier.destroy', $supplier->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus supplier?')">
+                            <i class="bx bx-trash me-1"></i> Hapus
+                        </button>
+                    </form>
                 </div>
 
             </div>
@@ -41,7 +45,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="kategori" class="form-label">Kategori <span style="color: red;">*</span></label>
-                            <select name="kategori_id" id="kategori_id" class="form-control">
+                            <select name="kategori_id" id="kategori_id" class="form-control" required>
                                 <option value="">
                                     {{ old('kategori_id', optional($supplier->kategori)->nama_kategori ?? 'Pilih Kategori') }}
                                 </option>

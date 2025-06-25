@@ -9,7 +9,7 @@ class TambahStok extends Model
 {
     use HasFactory;
 
-    protected $table = 'tambah_stok';
+    protected $table = 'tambah_stoks';
     protected $fillable = [
         'barang_id',
         'supplier_id',

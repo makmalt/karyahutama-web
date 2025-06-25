@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Tagihan')
+@section('title', 'POS Karya Hutama Oxygen - Daftar Tagihan')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -91,7 +91,7 @@
                             aria-labelledby="perbaruiStatusModalLabel{{ $tagihan->id }}" aria-hidden="true">
                             <div class="modal-dialog">
                                 <form action="{{ route('tagihan.updateStatus', $tagihan->id) }}" method="POST"
-                                    class="modal-content" id="updateStatusForm{{ $tagihan->id }}">
+                                    class="modal-content update-status-form" id="updateStatusForm{{ $tagihan->id }}">
                                     @csrf
                                     @method('PUT')
                                     <div class="modal-header">
@@ -141,7 +141,7 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
                                             data-bs-dismiss="modal">Batal</button>
-                                        <button type="submit" class="btn btn-primary"
+                                        <button type="submit" class="btn btn-primary simpan-status-btn"
                                             id="simpanStatusBtn{{ $tagihan->id }}">
                                             <i class="bx bx-save me-1"></i> Simpan Perubahan
                                         </button>
@@ -165,13 +165,18 @@
                 });
             });
             document.addEventListener('DOMContentLoaded', function() {
-                const form = document.getElementById('updateStatusForm{{ $tagihan->id }}');
-                const submitBtn = document.getElementById('simpanStatusBtn{{ $tagihan->id }}');
+                // Get all forms with class 'update-status-form'
+                const forms = document.querySelectorAll('.update-status-form');
 
-                form.addEventListener('submit', function(e) {
-                    submitBtn.innerHTML =
-                        '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Menyimpan...';
-                    submitBtn.disabled = true;
+                forms.forEach(form => {
+                    form.addEventListener('submit', function(e) {
+                        const submitBtn = this.querySelector('.simpan-status-btn');
+                        if (submitBtn) {
+                            submitBtn.innerHTML =
+                                '<span class="spinner-border spinner-border-sm me-1" role="status" aria-hidden="true"></span> Menyimpan...';
+                            submitBtn.disabled = true;
+                        }
+                    });
                 });
             });
         </script>

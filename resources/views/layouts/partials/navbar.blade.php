@@ -11,8 +11,15 @@
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow" href="javascript:void(0);" data-bs-toggle="dropdown">
-                    <div class="avatar avatar-online">
-                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt class="w-px-40 h-auto rounded-circle" />
+                    @php
+                        $initials = collect(explode(' ', auth()->user()->name))
+                            ->map(fn($part) => strtoupper($part[0]))
+                            ->implode('');
+                    @endphp
+
+                    <div class="avatar avatar-online bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                        style="width: 40px; height: 40px; font-weight: bold;">
+                        {{ $initials }}
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -20,9 +27,9 @@
                         <a class="dropdown-item" href="#">
                             <div class="d-flex">
                                 <div class="flex-shrink-0 me-3">
-                                    <div class="avatar avatar-online">
-                                        <img src="{{ asset('assets/img/avatars/1.png') }}" alt
-                                            class="w-px-40 h-auto rounded-circle" />
+                                    <div class="avatar avatar-online bg-primary text-white rounded-circle d-flex align-items-center justify-content-center"
+                                        style="width: 40px; height: 40px; font-weight: bold;">
+                                        {{ $initials }}
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">

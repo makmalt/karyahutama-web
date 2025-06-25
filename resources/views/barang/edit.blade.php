@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Barang')
+@section('title', 'POS Karya Hutama Oxygen - Edit Barang')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -17,9 +17,13 @@
                     <a href="{{ route('barang.show', $barang->id) }}" class="btn btn-primary">
                         <i class="bx bx-detail me-1"></i> Detail
                     </a>
-                    <a href="{{ route('barang.destroy', $barang->id) }}" class="btn btn-danger">
-                        <i class="bx bx-trash me-1"></i> Hapus
-                    </a>
+                    <form action="{{ route('barang.destroy', $barang->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus barang?')">
+                            <i class="bx bx-trash me-1"></i> Hapus
+                        </button>
+                    </form>
                 </div>
             </div>
             <div class="card">
@@ -41,6 +45,22 @@
                                     @enderror
                                 </div>
 
+                                <div class="mb-3">
+                                    <label for="barcode" class="form-label">Barcode</label>
+                                    <input type="text" class="form-control @error('barcode') is-invalid @enderror"
+                                        id="barcode" name="barcode" value="{{ old('barcode', $barang->barcode) }}">
+                                    @error('barcode')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="sku_id" class="form-label">SKU ID</label>
+                                    <input type="text" class="form-control @error('sku_id') is-invalid @enderror"
+                                        id="sku_id" name="sku_id" value="{{ old('sku_id', $barang->sku_id) }}">
+                                    @error('sku_id')
+                                        <div class="invalid-feedback">{{ $message }}</div>
+                                    @enderror
+                                </div>
                                 <div class="mb-3">
                                     <label for="kategori_id" class="form-label">Kategori <span
                                             style="color: red;">*</span></label>
@@ -95,7 +115,8 @@
                                             style="color: red;">*</span></label>
                                     <input type="number" class="form-control @error('stok_tersedia') is-invalid @enderror"
                                         id="stok_tersedia" name="stok_tersedia"
-                                        value="{{ old('stok_tersedia', $barang->stok_tersedia) }}" required min="0">
+                                        value="{{ old('stok_tersedia', $barang->stok_tersedia) }}" required
+                                        min="0">
                                     @error('stok_tersedia')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror
@@ -116,7 +137,8 @@
 
                                 <div class="mb-3">
                                     <label for="deskripsi" class="form-label">Deskripsi</label>
-                                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi" rows="3">{{ old('deskripsi', $barang->deskripsi) }}</textarea>
+                                    <textarea class="form-control @error('deskripsi') is-invalid @enderror" id="deskripsi" name="deskripsi"
+                                        rows="3">{{ old('deskripsi', $barang->deskripsi) }}</textarea>
                                     @error('deskripsi')
                                         <div class="invalid-feedback">{{ $message }}</div>
                                     @enderror

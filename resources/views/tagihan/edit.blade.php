@@ -1,12 +1,33 @@
 @extends('layouts.app')
 
-@section('title', 'Edit Tagihan')
+@section('title', 'POS Karya Hutama Oxygen - Edit Tagihan')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb mb-3">
+                    <li class="breadcrumb-item"><a href="#">Tagihan</a></li>
+                    <li class="breadcrumb-item"><a href="{{ route('tagihan.index') }}">Daftar Tagihan</a></li>
+                    <li class="breadcrumb-item active" aria-current="page">Edit Tagihan</li>
+                </ol>
+            </nav>
+            <div class="d-flex justify-content-between mb-3">
+                <h5 class="mb-0">Edit Tagihan</h5>
+                <div class="d-flex gap-2 justify-content-end mb-3">
+                    <a href="{{ route('tagihan.show', $tagihan->id) }}" class="btn btn-primary">
+                        <i class="bx bx-detail me-1"></i> Detail
+                    </a>
+                    <form action="{{ route('tagihan.destroy', $tagihan->id) }}" method="POST" class="d-inline">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger" onclick="return confirm('Yakin hapus tagihan?')">
+                            <i class="bx bx-trash me-1"></i> Hapus
+                        </button>
+                    </form>
+                </div>
+            </div>
             <div class="card">
                 <div class="card-header">
-                    <h5 class="mb-0">Edit Tagihan</h5>
                 </div>
                 <div class="card-body">
                     <form action="{{ route('tagihan.update', $tagihan->id) }}" method="POST" enctype="multipart/form-data">
@@ -42,7 +63,8 @@
                                 <span class="input-group-text">Rp</span>
                                 <input type="number" class="form-control @error('nominal_tagihan') is-invalid @enderror"
                                     id="nominal_tagihan" name="nominal_tagihan"
-                                    value="{{ old('nominal_tagihan', $tagihan->nominal_tagihan) }}" required min="0">
+                                    value="{{ old('nominal_tagihan', $tagihan->nominal_tagihan) }}" required
+                                    min="0">
                             </div>
                             @error('nominal_tagihan')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -53,7 +75,8 @@
                                     style="color: red;">*</span></label>
                             <input type="date" class="form-control @error('jatuhTempo_tagihan') is-invalid @enderror"
                                 id="jatuhTempo_tagihan" name="jatuhTempo_tagihan"
-                                value="{{ old('jatuhTempo_tagihan', $tagihan->jatuhTempo_tagihan) }}" required>
+                                value="{{ old('jatuhTempo_tagihan', $tagihan->jatuhTempo_tagihan->format('Y-m-d')) }}"
+                                required>
                             @error('jatuhTempo_tagihan')
                                 <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

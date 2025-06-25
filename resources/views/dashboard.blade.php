@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Dashboard')
+@section('title', 'POS Karya Hutama Oxygen - Dashboard')
 <style>
     #body-tagihan tr:hover {
         background-color: #f2f2f2;

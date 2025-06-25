@@ -15,6 +15,9 @@ use App\Http\Controllers\UserController;
 Route::get('/login', [AuthWebController::class, 'showLoginForm'])->middleware('guest')->name('login');
 Route::post('/login', [AuthWebController::class, 'loginWeb'])->name('login.submit');
 Route::post('/logout', [AuthWebController::class, 'logoutWeb'])->name('logout');
+Route::get('/cek-waktu', function () {
+    return now()->format('d-m-Y H:i');
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/', function () {

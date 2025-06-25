@@ -1,6 +1,6 @@
 @extends('layouts.app')
 
-@section('title', 'Tambah Supplier')
+@section('title', 'POS Karya Hutama Oxygen - Tambah Supplier')
 @section('content')
     <div class="content-wrapper">
         <div class="container-xxl flex-grow-1 container-p-y">
@@ -30,12 +30,19 @@
                         </div>
                         <div class="mb-3">
                             <label for="kategori" class="form-label">Kategori <span style="color: red;">*</span></label>
-                            <select name="nama_kategori" id="nama_kategori" class="form-control">
+                            <select name="kategori_id" id="kategori_id"
+                                class="form-control @error('kategori_id') is-invalid @enderror" required>
                                 <option value="">Pilih Kategori</option>
                                 @foreach ($kategoris as $kategori)
-                                    <option value="{{ $kategori->id }}">{{ $kategori->nama_kategori }}</option>
+                                    <option value="{{ $kategori->id }}"
+                                        {{ old('kategori_id') == $kategori->id ? 'selected' : '' }}>
+                                        {{ $kategori->nama_kategori }}
+                                    </option>
                                 @endforeach
                             </select>
+                            @error('kategori_id')
+                                <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
 
                         <div class="mb-3">
