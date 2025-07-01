@@ -45,6 +45,8 @@ class StokServices
         $barang->stok_tersedia = max(0, $barang->stok_tersedia - $tambahStok->kuantitas);
         $barang->save();
         $tambahStok->delete();
+
+        return $barang->id;
     }
 
     public function totalHarga($kuantitas, $hargaSatuan)

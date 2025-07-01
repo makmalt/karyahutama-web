@@ -183,9 +183,9 @@ class BarangController extends Controller
     public function kurangStok($id)
     {
         $stokServices = new StokServices();
-        $stokServices->kurangStokBarang($id);
+        $barangId = $stokServices->kurangStokBarang($id);
 
-        return redirect()->route('barang.show', $id)
+        return redirect()->route('barang.show', $barangId)
             ->with('success', 'Stok berhasil dikurangi');
     }
 }

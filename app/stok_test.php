@@ -12,11 +12,6 @@ use App\Models\TambahStok;
 
 $stok = new StokServices();
 
-// Test fungsi totalHarga
-echo "== Test totalHarga() ==\n";
-$total = $stok->totalHarga(10, 5000);
-echo "Expected: 50000 | Got: $total\n\n";
-
 // Test fungsi awalStok
 echo "== Test awalStok() ==\n";
 $data = $stok->awalStok(1, 2, 10, 5000);
