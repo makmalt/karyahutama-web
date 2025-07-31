@@ -9,8 +9,14 @@ class Transaksi extends Model
 {
     use HasFactory;
 
-    protected $table = 'transaksi'; 
-    protected $fillable = ['no_transaksi', 'tgl_transaksi', 'grand_total', 'uang_pembayaran', 'uang_kembalian'];
+    protected $table = 'transaksi';
+    protected $fillable = [
+        'no_transaksi',
+        'tgl_transaksi',
+        'grand_total',
+        'uang_pembayaran',
+        'uang_kembalian'
+    ];
 
     public function barangTransaksi()
     {
@@ -20,5 +26,4 @@ class Transaksi extends Model
     protected $casts = [
         'tgl_transaksi' => 'datetime',
     ];
-    
 }
